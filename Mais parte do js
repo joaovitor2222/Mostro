@@ -1,0 +1,83 @@
+// Adicionando mais monstros
+const allMonsters = [
+    { name: "Leão de Fogo", type: "Fogo", level: 1, hp: 20, xp: 0 },
+    { name: "Tubarão de Água", type: "Água", level: 1, hp: 20, xp: 0 },
+    { name: "Árvore Viva", type: "Grama", level: 1, hp: 20, xp: 0 },
+    { name: "Serpente de Gelo", type: "Gelo", level: 1, hp: 20, xp: 0 },
+    { name: "Tigre Elétrico", type: "Raio", level: 1, hp: 20, xp: 0 },
+    { name: "Rinoceronte Metálico", type: "Metal", level: 1, hp: 20, xp: 0 }
+];
+
+// Função para capturar monstros
+document.getElementById("captureBtn").addEventListener("click", () => {
+    if (Math.random() < 0.5) {
+        let newMonster = { ...enemyMonster, level: 1, xp: 0 };
+        player.monsters.push(newMonster);
+        alert(`Você capturou um ${newMonster.name}!`);
+    } else {
+        alert("O monstro escapou!");
+    }
+    document.getElementById("battleScreen").classList.add("hidden");
+});
+
+// Função para atacar
+document.getElementById("attackBtn").addEventListener("click", () => {
+    enemyMonster.hp -= 10;
+    if (enemyMonster.hp <= 0) {
+        alert(`${enemyMonster.name} foi derrotado!`);
+        grantXP();
+        document.getElementById("battleScreen").classList.add("hidden");
+    } else {
+        alert(`${enemyMonster.name} ainda tem ${enemyMonster.hp} de vida.`);
+    }
+});
+
+// Função para dar XP após a batalha
+function grantXP() {
+    for (let mon of player.monsters) {
+        mon.xp += 20;
+        if (mon.xp >= 100) {
+            mon.level++;
+            mon.hp += 10;
+            mon.xp = 0;
+            alert(`${mon.name} subiu para o nível ${mon.level}!`);
+        }
+    }
+}
+
+// Fugir da batalha
+document.getElementById("runBtn").addEventListener("click", () => {
+    document.getElementById("battleScreen").classList.add("hidden");
+});
+
+// Enfrentar NPCs e líderes
+const npcs = [
+    { x: 150, y: 150, name: "NPC Treinador 1", monsters: [allMonsters[0]] },
+    { x: 350, y: 250, name: "NPC Treinador 2", monsters: [allMonsters[1]] },
+    { x: 550, y: 350, name: "NPC Treinador 3", monsters: [allMonsters[2]] }
+];
+
+function checkNPCs() {
+    for (let npc of npcs) {
+        if (player.x >= npc.x && player.x <= npc.x + 30 &&
+            player.y >= npc.y && player.y <= npc.y + 30) {
+            startBattle(npc.monsters[0]);
+        }
+    }
+}
+
+// Salvando e carregando progresso
+function saveGame() {
+    localStorage.setItem("playerData", JSON.stringify(player));
+}
+
+function loadGame() {
+    let savedData = localStorage.getItem("playerData");
+    if (savedData) {
+        player = JSON.parse(savedData);
+        alert("Jogo carregado!");
+    }
+}
+
+// Carregar jogo ao iniciar
+loadGame();
