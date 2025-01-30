@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batalha de Monstros - Sistema de Energia</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #energia { font-size: 20px; margin: 20px; }
+        .monstro { margin: 20px; font-size: 18px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Batalha de Monstros</h1>
+
+    <div id="energia">Energia Restante: <span id="energiaAtual">100</span> / 100</div>
+
+    <div class="monstro" id="monstro1">
+        <h3>Monstro 1 (Água)</h3>
+        <button onclick="usarAtaque(1)">Ataque de Água (30 Energia)</button>
+        <button onclick="usarAtaqueEspecial(1)">Habilidade Especial (50 Energia)</button>
+    </div>
+
+    <div class="monstro" id="monstro2">
+        <h3>Monstro 2 (Planta)</h3>
+        <button onclick="usarAtaque(2)">Ataque de Planta (20 Energia)</button>
+        <button onclick="usarAtaqueEspecial(2)">Habilidade Especial (60 Energia)</button>
+    </div>
+
+    <div id="mensagem"></div>
+
+    <script>
+        let energiaTotal = 100;  // Energia total compartilhada entre os monstros
+
+        // Função para usar um ataque baseado na tipagem
+        function usarAtaque(monstro) {
+            let energiaNecessaria = 0;
+
+            if (monstro === 1) {
+                energiaNecessaria = 30;  // Ataque de Água
+            } else if (monstro === 2) {
+                energiaNecessaria = 20;  // Ataque de Planta
+            }
+
+            // Verifica se há energia suficiente
+            if (energiaTotal >= energiaNecessaria) {
+                energiaTotal -= energiaNecessaria;
+                document.getElementById("energiaAtual").textContent = energiaTotal;
+                document.getElementById("mensagem").textContent = `Monstro ${monstro} usou o ataque! Energia restante: ${energiaTotal}`;
+            } else {
+                document.getElementById("mensagem").textContent = `Energia insuficiente para o ataque do monstro ${monstro}.`;
+            }
+        }
+
+        // Função para usar uma habilidade especial
+        function usarAtaqueEspecial(monstro) {
+            let energiaNecessaria = 0;
+
+            if (monstro === 1) {
+                energiaNecessaria = 50;  // Habilidade Especial do Monstro 1 (Água)
+            } else if (monstro === 2) {
+                energiaNecessaria = 60;  // Habilidade Especial do Monstro 2 (Planta)
+            }
+
+            // Verifica se há energia suficiente
+            if (energiaTotal >= energiaNecessaria) {
+                energiaTotal -= energiaNecessaria;
+                document.getElementById("energiaAtual").textContent = energiaTotal;
+                document.getElementById("mensagem").textContent = `Monstro ${monstro} usou sua habilidade especial! Energia restante: ${energiaTotal}`;
+            } else {
+                document.getElementById("mensagem").textContent = `Energia insuficiente para a habilidade especial do monstro ${monstro}.`;
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+function habilidadeEspecialDrenar(monstro) {
+    let energiaNecessaria = 60;
+    let energiaRestaurada = 60;
+
+    if (energiaTotal >= energiaNecessaria) {
+        energiaTotal -= energiaNecessaria;
+        document.getElementById("energiaAtual").textContent = energiaTotal;
+        document.getElementById("mensagem").textContent = `Monstro ${monstro} drenou a energia do oponente! Energia restante: ${energiaTotal}`;
+        
+        // Restaurando energia para o monstro que usou a habilidade
+        energiaTotal += energiaRestaurada;
+        document.getElementById("energiaAtual").textContent = energiaTotal;
+    } else {
+        document.getElementById("mensagem").textContent = `Energia insuficiente para drenagem de vida.`;
+    }
+}
+
+
+
+
+
+
+// Energia compartilhada
+let energiaTotal = 100;
+let jogadorMonstros = [
+    { nome: "Tubarão de Água", tipo: "Água", energia: 100, vida: 100 },
+    { nome: "Leão de Fogo", tipo: "Fogo", energia: 100, vida: 100 },
+    { nome: "Árvore Viva", tipo: "Planta", energia: 100, vida: 100 }
+];
+
+// Função de ataque com base no tipo de monstro
+function usarAtaque(monstro, tipoAtaque) {
+    let energiaNecessaria;
+    let mensagem = '';
+
+    switch (tipoAtaque) {
+        case 'Ataque 1': 
+            energiaNecessaria = 30;
+            mensagem = `${monstro.nome} usou um ataque básico!`;
+            break;
+        case 'Ataque 2': 
+            energiaNecessaria = 50;
+            mensagem = `${monstro.nome} usou um ataque especial!`;
+            break;
+        case 'Habilidade Especial':
+            energiaNecessaria = 60;
+            mensagem = `${monstro.nome} usou sua habilidade especial!`;
+            break;
+        default:
+            mensagem = 'Ataque inválido!';
+            energiaNecessaria = 0;
+    }
+
+    // Verifica se o monstro tem energia suficiente para o ataque
+    if (energiaTotal >= energiaNecessaria) {
+        energiaTotal -= energiaNecessaria;
+        console.log(mensagem);
+        console.log(`Energia restante: ${energiaTotal}`);
+    } else {
+        console.log('Energia insuficiente para o ataque.');
+    }
+}
+
+// Exemplo de ataques e habilidades
+usarAtaque(jogadorMonstros[0], 'Ataque 1');  // Tubarão de Água
+usarAtaque(jogadorMonstros[1], 'Habilidade Especial');  // Leão de Fogo
+usarAtaque(jogadorMonstros[2], 'Ataque 2');  // Árvore Viva
