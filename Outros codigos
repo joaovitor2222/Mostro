@@ -149,3 +149,117 @@ function usarAtaque(monstro, tipoAtaque) {
 usarAtaque(jogadorMonstros[0], 'Ataque 1');  // Tubarão de Água
 usarAtaque(jogadorMonstros[1], 'Habilidade Especial');  // Leão de Fogo
 usarAtaque(jogadorMonstros[2], 'Ataque 2');  // Árvore Viva
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster World - Com Joystick</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        canvas { border: 2px solid black; background: lightgreen; }
+        .joystick-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .joystick {
+            width: 50px;
+            height: 50px;
+            background-color: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <h1>Monster World</h1>
+    <p>Controle seu personagem com o joystick abaixo!</p>
+
+    <canvas id="gameCanvas"></canvas>
+    
+    <!-- Joystick container -->
+    <div class="joystick-container">
+        <div class="joystick" id="joystick"></div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = 600;
+canvas.height = 400;
+
+// Jogador
+let player = { x: 50, y: 50, width: 20, height: 20 };
+
+// Variáveis para controle do joystick
+let joystick = document.getElementById('joystick');
+let joystickContainer = document.querySelector('.joystick-container');
+let isDragging = false;
+let joystickCenter = { x: joystickContainer.offsetWidth / 2, y: joystickContainer.offsetHeight / 2 };
+
+// Função para mover o joystick dentro do contêiner
+function moveJoystick(event) {
+    if (isDragging) {
+        const offsetX = event.clientX - joystickContainer.offsetLeft;
+        const offsetY = event.clientY - joystickContainer.offsetTop;
+        const angle = Math.atan2(offsetY - joystickCenter.y, offsetX - joystickCenter.x);
+        const distance = Math.min(Math.hypot(offsetX - joystickCenter.x, offsetY - joystickCenter.y), 40);
+        joystick.style.left = `${distance * Math.cos(angle) + joystickCenter.x - 25}px`;
+        joystick.style.top = `${distance * Math.sin(angle) + joystickCenter.y - 25}px`;
+
+        // Calculando o movimento do jogador
+        const speed = 5;
+        if (distance > 10) {
+            player.x += speed * Math.cos(angle);
+            player.y += speed * Math.sin(angle);
+        }
+    }
+}
+
+// Função para começar a arrastar o joystick
+joystick.addEventListener('mousedown', () => {
+    isDragging = true;
+});
+
+// Função para parar de arrastar o joystick
+document.addEventListener('mouseup', () => {
+    isDragging = false;
+    joystick.style.left = `${joystickCenter.x - 25}px`;
+    joystick.style.top = `${joystickCenter.y - 25}px`;
+});
+
+// Função para desenhar o jogador e o cenário
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "blue";
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+
+    // Requisição para continuar o loop de animação
+    requestAnimationFrame(draw);
+}
+
+draw();
