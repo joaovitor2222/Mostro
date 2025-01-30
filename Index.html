@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster World</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="battleScreen" class="hidden">
+            <h2>Você encontrou um monstro!</h2>
+            <p id="battleInfo"></p>
+            <button id="attackBtn">Atacar</button>
+            <button id="captureBtn">Capturar</button>
+            <button id="runBtn">Fugir</button>
+        </div>
+        <div id="cityMessage" class="hidden">
+            <h2>Bem-vindo à cidade!</h2>
+            <p id="cityInfo"></p>
+            <button id="closeCity">Fechar</button>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
